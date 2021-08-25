@@ -1,0 +1,13 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "android": "36"
+        }
+      }
+    ]
+  ],
+  "ignore": ["./bootstrap", "jquery.min.js"]
+}

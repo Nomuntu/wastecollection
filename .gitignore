@@ -1,0 +1,8 @@
+venv
+.idea
+__pycache__
+builds/
+.pytest_cache
+node_modules
+waste_photos
+.DS_STORE

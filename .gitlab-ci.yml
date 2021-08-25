@@ -1,0 +1,31 @@
+stages:
+  - test
+  - deploy
+
+default:
+  image: cbeuw/siyabuilder:latest
+  before_script:
+    - pip3 install -r requirements.txt
+
+form-submission-tests:
+  stage: test
+  services:
+    - postgres:12.2-alpine
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+    POSTGRES_HOST_AUTH_METHOD: trust
+  script:
+    - pytest tests
+
+deploy-heroku:
+  stage: deploy
+  before_script:
+    - ''
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_TOKEN
+  only:
+    - master
+
+
