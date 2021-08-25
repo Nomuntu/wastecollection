@@ -1,0 +1,36 @@
+{% extends "utils/base.html" %}
+{% from 'utils/form.html' import form_input %}
+{% block body %}
+  <div class="container">
+    <div class="{{ row_style() }}">
+      <h1>Welcome!</h1>
+      <h3>Enter your username and password</h3>
+    </div>
+    <form>
+      <div id="driver-details" class="{{ row_style() }}">
+        {{ form_input(label='Driver name',
+                      id='driver-name',
+                      icon='person-fill',
+                      invalid_feedback="Please enter the driver's name",
+                      extra_attributes='required') }}
+        {{ form_input(label="Driver's username",
+                      id='username',
+                      icon='person-fill',
+                      invalid_feedback="Please enter their username",
+                      extra_attributes='required') }}
+        {{ form_input(label="Driver's phone number",
+              id='phone',
+              icon='person-fill',
+              invalid_feedback="Please enter their phone number",
+              extra_attributes='required') }}
+      </div>
+      <div class="{{ row_style() }}">
+        <input type="button" id="submit" value="Submit" class="btn btn-success btn-lg px-4 me-md-2">
+      </div>
+    </form>
+  </div>
+{% endblock %}
+{% block footer %}
+  <script src="/static/js/utils/form_utils.js"></script>
+  <script src="/static/js/admin/add_driver.js"></script>
+{% endblock %}

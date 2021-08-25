@@ -1,0 +1,63 @@
+{% extends "utils/base.html" %}
+{% from 'utils/form.html' import form_input, phone_number_format %}
+{% from 'utils/map.html' import map_footer_scripts, map_rendered %}
+{% from 'utils/waste_entry.html' import waste_entry, waste_table, waste_entry_script, waste_display_script %}
+
+{% block body %}
+<div class="container">
+  <div class="{{ row_style() }}">
+    <h3>Create a request manually</h3>
+  </div>
+  <form>
+    <div class="{{ row_style() }}">
+      {{ form_input(label='Picker\'s name',
+                    id='name',
+                    icon='person-fill',
+                    invalid_feedback='Enter the picker\'s name') }}
+
+      {{ form_input(label='Picker\'s phone number',
+                    type='tel',
+                    id='phone-number',
+                    icon='telephone-fill',
+                    invalid_feedback='Enter the picker\'s phone number in the format ' ~ phone_number_format()) }}
+    </div>
+
+    <div class="{{ row_style() }}">
+      <div>Pickup location</div>
+      <div class="text-muted mb-3">Click on the map to select a location</div>
+      {{ map_rendered(height='500px', class='mb-4') }}
+      {{ form_input(id='location',
+                    icon='geo-alt-fill',
+                    invalid_feedback='',
+                    extra_attributes='disabled') }}
+    </div>
+
+    {{ waste_entry("Tell us about the waste", bag_sizes, material_types) }}
+    {{ waste_table() }}
+
+    <div class="{{ row_style() }}">
+      {{ form_input(label='Upload a photo of the waste',
+                    id='photo',
+                    type='file',
+                    optional=True,
+                    extra_attributes='accept="image/*"') }}
+    </div>
+
+    <div class="{{ row_style() }}">
+      <input type="button" id="collection-submit" value="Submit" class="btn btn-success btn-lg px-4 me-md-2">
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ map_footer_scripts(pins=[]) }}
+<script src="/static/js/utils/form_utils.js"></script>
+<script src="/static/js/utils/request_utils.js"></script>
+<!-- manual_request has to be included before waste_entry -->
+<script src="/static/js/admin/manual_request.js"></script>
+<!-- waste_display has to be included before waste_entry -->
+{{ waste_display_script() }}
+{{ waste_entry_script() }}
+{% endblock %}
+

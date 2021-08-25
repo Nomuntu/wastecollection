@@ -1,0 +1,26 @@
+{% macro row_style() %}row my-3 p-3 bg-body rounded shadow-sm{% endmacro %}
+
+{% macro table_style() %}table table-hover table-striped{% endmacro %}
+
+{% macro datatables_footer() %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+{% endmacro %}
+
+{% macro request_headers() %}
+<th scope="col">Name</th>
+<th scope="col">Request date</th>
+<th scope="col">Location</th>
+{% endmacro %}
+
+{% macro request_row(name, date, address, timestamp=None) %}
+<td>{{ name }}</td>
+<td>
+  {% if timestamp is not none %}
+  <span style="display: none;">{{ timestamp }}</span>
+  {% endif %}
+  {{ date }}
+</td>
+<td>{{ address }}</td>
+{% endmacro %}

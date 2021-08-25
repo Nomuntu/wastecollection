@@ -1,0 +1,17 @@
+{% extends "utils/base.html" %}
+{% block body %}
+  <div class="container">
+    <div id="greeting" class="{{ row_style() }}">
+      <h1>Driver {{ name }} successfully added</h1>
+
+      <h3>They will receive a SMS message with their username and a link to set their password</h3>
+      <h6>You can also pass this information to them:
+        <br/>
+        Username: {{ username }}
+        <br/>
+        Password link: <a href="{{ password_link }}">{{ password_link }}</a>
+        <br/>
+      </h6>
+    </div>
+  </div>
+{% endblock %}

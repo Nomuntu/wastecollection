@@ -1,0 +1,7 @@
+{% from 'utils/common.html' import row_style %}
+{% macro greeting(title, subtitle) -%}
+<div id="greeting" class="{{ row_style() }}">
+  <h1>{{ title }}</h1>
+  <div>{{ subtitle }}</div>
+</div>
+{%- endmacro %}

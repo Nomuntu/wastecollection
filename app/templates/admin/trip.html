@@ -1,0 +1,50 @@
+{% extends "driver/trip.html" %}
+{% from 'utils/form.html' import form_input %}
+
+{% block admin_tools %}
+<button type="button"
+        id="submit-changes"
+        class="btn btn-success"
+        data-value="{{ trip.id }}" hidden>Submit changes</button>
+<button type="button"
+        id="edit-trip"
+        class="btn btn-secondary"><i class="bi bi-pencil-fill"></i></button>
+<button type="button"
+        id="delete-trip"
+        class="btn btn-danger"
+        data-value="{{ trip.id }}"><i class="bi bi-trash-fill"></i></button>
+{% endblock %}
+
+{% block body_extra %}
+<div class="{{ row_style() }}" id="edit-details" data-value="{{ trip.date }}" hidden>
+  <label class="mb-3" for="driver-selector">
+    Assign a driver
+  </label>
+  <div class="input-group mb-3 has-validation">
+    <select class="form-select" id="driver-selector">
+      <option disabled selected>Driver</option>
+      {% for driver in trip.driver_list %}
+      <option value="{{ driver.id }}">{{ driver.name }}</option>
+      {% endfor %}
+    </select>
+    <div class="invalid-feedback" id="no-driver-invalid-feedback">
+      Please select a driver
+    </div>
+  </div>
+
+  {{ form_input(id='date-selector',
+                label='Select a date for this trip',
+                type='date',
+                invalid_feedback='Please select a future date') }}
+
+                <input data-value="{{ url_for('.schedule_trip', trip_id=trip.id) }}" type="button" id="submit-trip" value="Confirm" class="btn btn-success btn-lg px-4 me-md-2">
+</div>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" charset="utf8" src="/static/js/utils/form_utils.js"></script>
+<script type="text/javascript" charset="utf8" src="/static/js/admin/trip.js"></script>
+{{ map_footer_scripts(pins=pins) }}
+{% endblock %}
+
+

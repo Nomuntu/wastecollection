@@ -1,0 +1,24 @@
+{% extends "utils/base.html" %}
+{% from 'utils/form.html' import form_input, phone_number_format %}
+{% block body %}
+<div class="container">
+  <div class="{{ row_style() }}">
+    <h1>Just one more thing before we log you in!</h1>
+    <h3>Please enter the verification code that we just sent to {{ phone_number }}:</h3>
+  </div>
+
+  <div class="{{ row_style() }}">
+    {{ form_input(label='Verification code:', id='code-entry', icon='chat-text') }}
+  </div>
+
+  <div class="{{ row_style() }}">
+    <input type="button" id="verification-submit" value="Submit" class="btn btn-success btn-lg px-4 me-md-3 mb-3">
+    <a href="/" class="text-center text-muted">Back to login page</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="/static/js/utils/form_utils.js"></script>
+<script src="/static/js/picker/sms_verify.js"></script>
+{% endblock %}

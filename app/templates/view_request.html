@@ -1,0 +1,140 @@
+{% extends "utils/base.html" %}
+{% from 'utils/greeting.html' import greeting %}
+{% from 'utils/map.html' import map_footer_scripts, map_rendered %}
+{% from 'utils/form.html' import form_input, phone_number_format %}
+{% from 'utils/waste_entry.html' import waste_entry, waste_table, waste_entry_script, waste_display_script %}
+
+{% block body %}
+<div class="container">
+  <div id="greeting" class="{{ row_style() }}">
+    <div class="col-8">
+      <h2>{{ req.name }}'s collection request</h2>
+    </div>
+    <div class="col-4" style="text-align: right">
+      <button type="button"
+              id="submit-changes"
+              class="btn btn-success"
+              data-value="{{ req.id }}" hidden>Submit changes</button>
+      <button type="button"
+              id="edit-request"
+              class="btn btn-secondary"><i class="bi bi-pencil-fill"></i></button>
+      <button type="button"
+              id="delete-request"
+              class="btn btn-danger"
+              data-value="{{ req.id }}"><i class="bi bi-trash-fill"></i></button>
+    </div>
+  </div>
+  <div class="{{ row_style() }}">
+    <button type="button"
+            id="mark-as-complete-button"
+            class="btn btn-success"
+            onclick="markAsComplete({{ req.id }}, this)"
+            {% if req.completed() %} disabled {% endif %}>
+      {% if req.completed() %}
+      Collection has been completed
+      {% else %}
+      Mark as complete
+      {% endif %}
+    </button>
+    <div class="invalid-feedback" id="marking-failure-feedback"></div>
+  </div>
+  <div class="{{ row_style() }}">
+    <table class="table" id="collector_info">
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Phone number</td>
+          <td>Location</td>
+          <td>Request date</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="text" id="name" class="form-control" value="{{ req.name }}" readonly style="border: none">
+            <div class="invalid-feedback" id="name-invalid-feedback">Enter the picker's name</div>
+          </td>
+          <td>
+            <input type="tel" id="phone-number" class="form-control" value="{{ req.phone_num }}" readonly style="border: none">
+            <span id="call-link">
+              (<a href="tel:{{ req.phone_num }}">Call</a>)
+            </span>
+            <div class="invalid-feedback" id="phone-number-invalid-feedback">Enter the picker's phone number in the format {{ phone_number_format() }} </div>
+          </td>
+          <td>
+            {% if req.address is not none %}
+            {{ req.address }} (<a href="{{ req.maps_url() }}" target="_blank">Open in Google Maps</a>)
+            {% else %}
+            {{ req.manual_address }}
+            <span class="text-muted">(Manually entered)</span>
+            {% endif %}
+            <span id="location-edit-prompt" class="text-muted" hidden>
+              <br/>
+              (You can use the map at the bottom of this page to change the location)
+            </span>
+          </td>
+          <td>{{ req.date }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="{{ row_style() }}">
+    {% if req.image_path is none %}
+    No photo supplied
+    {% else %}
+    <div class="col-6">
+      <img src="{{ req.image_path }}" class="img-fluid" alt="Image of waste">
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="{{ row_style() }}">
+    {% if req.additional_info is none %}
+    No additional information supplied
+    {% else %}
+    Additional information:
+    {{ req.additional_info }}
+    {% endif %}
+  </div>
+
+  {{ waste_entry("Edit the waste entries here", bag_sizes, material_types, extra_attributes='hidden') }}
+
+  {{ waste_table(req.waste_entries) }}
+
+  <div class="{{ row_style() }}">
+    {% if loc is none %}
+    <div id="no-loc-warning" class="alert alert-warning mb-3">
+      The picker has not provided their GPS location. You could set one manually by editing this request.
+    </div>
+    {% endif %}
+    <div id="edit-map-prompt" class="mb-3" hidden>
+      <h5>
+        Edit pickup location
+      </h5>
+      <div class="text-muted">
+        Click on the map to select a location
+      </div>
+    </div>
+    {{ map_rendered(height='300px') }}
+    <div id="edit-map-submit" hidden>
+      {{ form_input(id='location',
+      icon='geo-alt-fill',
+      invalid_feedback='',
+      extra_attributes='disabled') }}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="/static/js/utils/form_utils.js"></script>
+<script src="/static/js/utils/request_utils.js"></script>
+{{ map_footer_scripts(pins=pins) }}
+
+<!-- view_request has to be included before waste_entry -->
+<script src="/static/js/view_request.js"></script>
+<!-- waste_display has to be included before waste_entry -->
+{{ waste_display_script(waste_entries=req.waste_entries) }}
+{{ waste_entry_script() }}
+{% endblock %}

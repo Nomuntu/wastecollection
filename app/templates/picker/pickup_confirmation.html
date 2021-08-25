@@ -1,0 +1,22 @@
+{% extends "utils/base.html" %}
+{% from 'utils/greeting.html' import greeting %}
+{% block body %}
+
+<div class="container">
+  {{ greeting('Hi, ' ~ session.get('name') ~ '!',
+  'Here are the collection details for your recent request') }}
+  <div class="{{ row_style() }}">
+    <p>
+    Pickup date: {{ pickup_date }}
+    <br/>
+    Pickup location:
+    <a href="{{ maps_url }}" target="_blank">View in Google Maps</a>
+    {% if comments is not none %}
+    <br/>
+    Additional comments: {{ comments }}
+    {% endif %}
+    </p>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% macro trip_table(trips, admin_view=False) %}
+
+{% set endpoint %}.{% if admin_view %}trip_admin{% else %}trip_driver{% endif %}{% endset %}
+
+<table class="table table-striped table-hover" id="trip-table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Location</th>
+      <th scope="col">Number of requests</th>
+      <th scope="col">Scheduled date</th>
+      {% if admin_view %}
+      <th scope="col">Driver</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for trip in trips %}
+    <tr class="clickable-table-row" data-value="{{ url_for(endpoint, trip_id=trip.id) }}">
+      <td>{{ trip.id }}</td>
+      <td>{{ trip.location }}</td>
+      <td>{{ trip.collections|length }}</td>
+      <td>{{ trip.scheduled_date }}</td>
+      {% if admin_view %}
+      <td>{{ trip.employee.name if trip.employee is not none else 'Unassigned' }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}

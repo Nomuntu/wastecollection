@@ -1,0 +1,28 @@
+{% extends "utils/base.html" %}
+{% from 'utils/form.html' import form_input, phone_number_format %}
+{% block body %}
+<div class="container">
+  <div class="{{ row_style() }}">
+    <h1>Welcome!</h1>
+    <h3>Enter your name and phone number to get started</h3>
+  </div>
+  <div class="{{ row_style() }}">
+    {{ form_input(label='Name', id='name', icon='person-fill') }}
+    {{ form_input(label='Phone number',
+                  id='phone-number',
+                  icon='telephone-fill',
+                  type='tel',
+                  invalid_feedback='Please input your number in the form ' ~ phone_number_format(),
+                  help_text='We will use this phone number to contact you about collecting your recycling'
+                  ) }}
+  </div>
+  <div class="{{ row_style() }}">
+    <input type="button" id="login-submit" value="Submit" class="btn btn-success btn-lg px-4 me-md-2">
+  </div>
+</div>
+{% endblock %}
+{% block footer %}
+<script src="/static/js/utils/form_utils.js"></script>
+<script src="/static/js/picker/login.js"></script>
+{% endblock %}
+

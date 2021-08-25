@@ -1,0 +1,94 @@
+{% extends "utils/base.html" %}
+{% from 'utils/greeting.html' import greeting %}
+{% from 'utils/map.html' import map_footer_scripts, map_rendered %}
+
+{% block body %}
+<div class="container">
+  <div class="{{ row_style() }}">
+    <div class="col-8">
+      <h3>Trip {{ trip.id }}</h3>
+    </div>
+    <div class="col-4" style="text-align: right">
+      {% block admin_tools %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <div class="{{ row_style() }}">
+    Location: {{ trip.location }}
+    <br>
+    Number of requests: {{ trip.number }}
+    <br>
+    Assignee: {{ trip.employee }}
+    <br>
+    Date: {{ trip.date }}
+  </div>
+
+  {% block body_extra %}
+  {% endblock %}
+
+  {% if trip.requests|length == 0 %}
+
+  <div class="{{ row_style() }}">
+    This trip has no requests
+  </div>
+
+  {% else %}
+
+  <div class="{{ row_style() }}">
+    {{ map_rendered() }}
+  </div>
+
+  <div class="{{ row_style() }}">
+    <h3>Suggested route</h3>
+    {% if trip.optimization_successful %}
+    <div class="text-muted mb-3">
+      The requests are ordered in the suggested pickup order, optimized for efficiency.
+      You can use Google Maps to follow the suggested order by following
+      <a href="{{ trip.maps_url }}" target="_blank">this link</a>.
+    </div>
+    {% else %}
+    <div class="alert alert-warning mb-3">
+      Route optimization failed for this trip. The requests below are
+      <strong>not</strong> displayed in an optimal order.
+      {% if trip.err_msg is not none %}
+      Error details: {{ trip.err_msg }}
+      {% endif %}
+    </div>
+    {% endif %}
+    <table class="table table-striped" id="requests">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Phone number</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in range(trip.requests|length) %}
+        {% set req = trip.requests[i] %}
+        <tr class="clickable-table-row" id="row_{{ req.id }}" data-value="{{ req.id }}">
+          <td>{{ i + 1 }}</td>
+          <td>{{ req.name }}</td>
+          <td>{{ req.phone_num }} (<a href="tel:{{ req.phone_num }}">Call</a>)</td>
+          <td>{{ req.address }} (<a href="{{ req.maps_url() }}" target="_blank">Open in Google Maps</a>)</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block footer %}
+<script>
+$('.clickable-table-row').on('click', e => {
+    const id = e.currentTarget.getAttribute("data-value")
+    location.href = `/view_request/${id}`
+})
+</script>
+{{ map_footer_scripts(pins=pins) }}
+{% endblock %}
+

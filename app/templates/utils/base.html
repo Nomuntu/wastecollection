@@ -1,0 +1,38 @@
+{% from 'utils/common.html' import row_style %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SiyaBuddy Recycling App</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content=""/>
+    <link href="/static/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/lib/bootstrap-icons-1.5.0/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="/static/img/logo.png">
+    <link rel="preload"
+          href="/static/lib/bootstrap-icons-1.5.0/fonts/bootstrap-icons.woff2?856008caa5eb66df68595e734e59580d"
+          as="font"
+          type="font/woff2"
+          crossorigin>
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+    {% endblock %}
+  </body>
+  <footer>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=Object.values%2CObject.entries%2Cfetch"></script>
+    <script src="/static/lib/jquery.min.js"></script>
+    {% block footer %}
+    {% endblock %}
+    <script>
+      $(document).ready(function () {
+        $('table').not('.dataTable').wrap('<div class="table-container"></div>')
+      })
+    </script>
+  </footer>
+</html>
+

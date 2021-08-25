@@ -1,0 +1,17 @@
+{% extends "utils/base.html" %}
+{% from 'utils/greeting.html' import greeting %}
+{% from 'utils/waste_entry.html' import waste_table, waste_display_script %}
+
+{% block body %}
+<div class="container">
+  {{ greeting('Thank you for your request, ' ~ session.get('name') ~ '!',
+              'Your request is waiting for confirmation from our team. You will receive an SMS notification on ' ~ session.get('phone') ~ ' once a collection has been scheduled') }}
+
+  {{ waste_table(waste_entries=waste_entries, description='You submitted the following waste information:') }}
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ waste_display_script(waste_entries=waste_entries) }}
+{% endblock %}

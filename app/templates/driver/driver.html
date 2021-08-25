@@ -1,0 +1,18 @@
+{% extends "utils/base.html" %}
+{% from 'utils/greeting.html' import greeting %}
+{% from 'utils/trip_table.html' import trip_table %}
+
+{% block body %}
+<div class="container">
+  {{ greeting('Hi, ' ~ name ~ '!', 'Here are the trips assigned to you') }}
+
+  <div class="{{ row_style() }}">
+    {{ trip_table(trips=trips) }}
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" charset="utf8" src="/static/js/driver/driver.js"></script>
+{% endblock %}
+

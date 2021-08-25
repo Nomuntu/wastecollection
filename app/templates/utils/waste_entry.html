@@ -1,0 +1,91 @@
+{% from 'utils/common.html' import row_style %}
+{% from 'utils/form.html' import form_input %}
+
+{% macro waste_entry(label, bag_sizes, material_types, extra_attributes="") %}
+  <div id="waste-entry-control" class="{{ row_style() }}" {{ extra_attributes }}>
+    <label for="rubbish-info" class="mb-3">{{ label }}</label>
+    <div class="row" id="rubbish-info">
+      <div class="col-sm-12 col-md">
+        <select class="form-select input-group mb-3" name="bag-size" id="bag-size">
+          <option disabled selected>Bag size</option>
+          {% for size in bag_sizes %}
+            <option value="{{ size }}">{{ size }} kg</option>
+          {% endfor %}
+        </select>
+        <div id="bag-size-invalid-feedback" class="invalid-feedback">
+          Please select a bag size
+        </div>
+      </div>
+      <div class="col-sm-12 col-md">
+        <select class="form-select input-group mb-3" name="material" id="material">
+          <option disabled selected>Waste type</option>
+          {% for material_type in material_types %}
+            <option value="{{ material_type }}">{{ material_type }}</option>
+          {% endfor %}
+        </select>
+        <div id="bag-size-invalid-feedback" class="invalid-feedback">
+          Please select a material
+        </div>
+      </div>
+      <div class="col-sm-12 col-md">
+        {{ form_input(id='num-bags',
+                      type='number',
+                      extra_attributes='min="1" step="1" placeholder="Number of bags"',
+                      invalid_feedback='Please enter a valid number of bags') }}
+      </div>
+      <div class="col-sm-12 col-md">
+        <input type='button' id="add-bag-btn" value="Add bags" class="btn btn-success btn-xs px-4 me-md-2">
+      </div>
+      <div class="invalid-feedback" id="empty-request-invalid-feedback">
+        Have you forgotten to add bags?
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro waste_table(waste_entries=[], description=None) %}
+  <div class="{{ row_style() }}" id="rubbish-info">
+    {% if description is not none %}
+    <span class="mb-3">{{ description }}</span>
+    {% endif %}
+
+    {% if waste_entries == [] %}
+      <span id="bag-info-table-placeholder" class="text-muted">
+        The bags you add will appear here
+      </span>
+    {% endif %}
+
+    <table class="table" id="bag-info-table" {% if waste_entries == [] %}style="display: none;"{% endif %}>
+      <thead>
+      <tr>
+        <th scope="col">Bag size (kg)</th>
+        <th scope="col">Waste type</th>
+        <th scope="col">Number</th>
+        <th scope="col"></th> <!-- delete button column -->
+      </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+{%- endmacro %}
+
+{% macro waste_display_script(waste_entries=[]) %}
+<script>
+  var waste = {
+    {% for entry in waste_entries %}
+        {{ loop.index }} : {
+            bag_size: {{ entry.bag_size }},
+            material: "{{ entry.material }}",
+            num_bags: {{ entry.num_bags }}},
+    {% endfor %}
+  }
+
+  var nextRowId = {{ waste_entries|length }} + 1
+</script>
+<script src="/static/js/utils/waste_display.js"></script>
+{%- endmacro %}
+
+{% macro waste_entry_script() %}
+<script src="/static/js/utils/waste_entry.js"></script>
+{%- endmacro %}

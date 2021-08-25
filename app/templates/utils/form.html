@@ -1,0 +1,64 @@
+{% macro form_input(id,
+                    label=None,
+                    icon=None,
+                    type='text',
+                    extra_attributes='',
+                    invalid_feedback=None,
+                    button_text=None,
+                    help_text=None,
+                    optional=False
+                    ) -%}
+
+{% if label is not none %}
+<label for="{{ id }}" class="mb-3">
+  {{ label }}
+
+  {% if optional %}{{ optional_indicator() }}{% endif %}
+</label>
+{% endif %}
+
+<div class="input-group
+            {% if help_text is none %}mb-3{% else %}mb-1{% endif %}
+            {% if invalid_feedback is not none %}has-validation{% endif %}"
+     id="{{ id }}-group">
+
+  {% if icon %}
+  <span class="input-group-text" id="{{ id }}-addon">
+    <i class="bi bi-{{ icon }} form-icon"></i>
+  </span>
+  {% endif %}
+
+  <input
+    type="{{ type }}"
+    class="form-control"
+    id="{{ id }}"
+    name="{{ id }}"
+    {% if help_text is not none %}aria-describedby="{{ id }}-help-text"{% endif %}
+    {{ extra_attributes|safe }}>
+
+  {% if button_text is not none %}
+  <button class="btn btn-success" type="button" id="{{ id }}-btn">{{ button_text }}</button>
+  {% endif %}
+
+  {% if invalid_feedback is not none %}
+  <div class="invalid-feedback" id="{{ id }}-invalid-feedback">
+    {{ invalid_feedback }}
+  </div>
+  {% endif %}
+</div>
+
+{% if help_text is not none %}
+<div id="{{ id }}-help-text" class="form-text mb-1">
+  {{ help_text }}
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro submit_button(message='Submit') -%}
+<input type="submit" value="{{ message }}" class="btn btn-success btn-lg px-4 me-md-2">
+{%- endmacro %}
+
+{% macro phone_number_format() %}0123456789 or 012 345 6789{% endmacro %}
+
+{% macro optional_indicator() %}<span class="text-muted">(optional)</span>{% endmacro %}
+

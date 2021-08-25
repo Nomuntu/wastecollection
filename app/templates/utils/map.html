@@ -1,0 +1,28 @@
+{% macro map_footer_scripts(pins=[], loc=None) -%}
+<script src="/static/lib/svg-inject.min.js"></script>
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin="">
+</script>
+<link rel="stylesheet" href="/static/lib/leaflet-gesture-handling/leaflet-gesture-handling.min.css" type="text/css">
+<script src="/static/lib/leaflet-gesture-handling/leaflet-gesture-handling.min.js"></script>
+<script>
+  var pins = [
+    {% for pin in pins %}
+    { loc: [{{ pin.lat }}, {{ pin.lon }}], reqId: {{ pin.reqId }}, msg: '{{ pin.msg }}' },
+    {% endfor %}
+  ]
+</script>
+<script type="text/javascript" charset="utf8" src="/static/js/utils/map_utils.js"></script>
+{%- endmacro %}
+
+{% macro map_rendered(height='500px', class=None) -%}
+<div id="map"
+     style="height: {{ height }}"
+     {% if class is not none %}class="{{ class }}"{% endif %}>
+</div>
+{%- endmacro %}
