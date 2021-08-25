@@ -1,0 +1,41 @@
+.form-icon {
+  font-size: 1.5rem;
+  color: green;
+}
+
+.form-control {
+  min-width: 120px !important;
+}
+
+.clickable-table-row {
+  cursor: pointer;
+}
+
+.checkbox-col {
+  cursor: default;
+}
+
+.div-icon {
+  background-color: transparent;
+}
+
+.div-icon svg {
+  height: 100%;
+  width: 100%;
+}
+
+.table-container {
+  overflow: auto;
+}
+
+.btn {
+  white-space: normal;
+}
+
+.dataTables_filter label {
+  display: flex;
+}
+
+.dataTables_filter label input {
+  width: 100% !important;
+}
