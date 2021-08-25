@@ -6,7 +6,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "build": "babel static/js -d static/js && sass --load-path=node_modules/bootstrap/scss static_src/bootstrap.scss static/lib/bootstrap/bootstrap.min.css --style compressed --no-source-map"
+    "build": "babel app/static/js -d app/static/js && sass --load-path=node_modules/bootstrap/scss app/static_src/bootstrap.scss app/static/lib/bootstrap/bootstrap.min.css --style compressed --no-source-map"
   },
   "author": "",
   "devDependencies": {
