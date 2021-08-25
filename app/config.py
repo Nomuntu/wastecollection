@@ -1,7 +1,7 @@
 import os
 
 # Options for entering waste amounts (in kg)
-BAG_SIZES = [25, 50, 1000, Bale]
+BAG_SIZES = [25, 50, 1000]
 MATERIAL_TYPES = [
     'Cardboard',
     'Paper',
