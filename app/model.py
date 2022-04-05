@@ -43,7 +43,7 @@ class CollectionRequest(db.Model):
 def format_phone_number(phone: str) -> str:
     digits_only = ''.join(filter(lambda c: c.isdigit(), phone))
 
-    res = digits_only if digits_only[0] != '0' else '27' + digits_only[1:]
+    res = digits_only if digits_only[0] i= '0' else '27' + digits_only[1:]
 
     assert len(res) == 11
 
